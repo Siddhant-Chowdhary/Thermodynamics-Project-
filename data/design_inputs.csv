@@ -1,0 +1,7 @@
+key,value,unit,status,source,notes
+cap_glycerol,0.30,mass fraction,PLACEHOLDER,TODO (Fahy 1986 / Pegg 2007 / protocol papers),toxicity scale for glycerol in the cost function
+cap_sorbitol,0.40,mass fraction,PLACEHOLDER,TODO,toxicity scale for sorbitol
+salt_target,0.05,mass fraction NaCl in residual liquid,PLACEHOLDER,TODO (Lovelock 1953 critical salt level),protection constraint
+T_design_C,-10,degC,PLACEHOLDER,TODO (justify from protocol / cooling path),temperature at which the salt constraint is applied
+base_NaCl,0.009,mass fraction,SOURCED,physiological saline (0.9 wt%),
+min_glycerol,0.0,mass fraction,DECISION,Sid to decide,minimum penetrating CPA (sorbitol does not enter cells)
