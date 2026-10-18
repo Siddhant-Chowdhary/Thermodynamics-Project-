@@ -1,0 +1,4 @@
+"# METHOD DEMO - placeholder inputs: cap_glycerol, cap_sorbitol, salt_target, T_design_C"
+model,glycerol_wt,sorbitol_wt,residual_NaCl_wt,cost
+per-OH model,2.0,3.0,4.77,0.010
+ideal polyols,3.0,2.0,4.93,0.013

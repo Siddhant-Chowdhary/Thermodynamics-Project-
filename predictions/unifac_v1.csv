@@ -1,0 +1,13 @@
+case,composition_wt_percent,T_UNIFAC_C,T_UNIFAC_Dortmund_C
+propylene_glycol,propylene_glycol=10,-2.17,-2.42
+propylene_glycol,propylene_glycol=20,-3.97,-4.81
+propylene_glycol,propylene_glycol=30,-5.69,-7.28
+sorbitol,sorbitol=10,-1.04,-0.93
+sorbitol,sorbitol=20,-2.25,-1.63
+sorbitol,sorbitol=30,-3.91,-2.05
+sorbitol,sorbitol=40,-6.44,-2.10
+glycerol,glycerol=10,-1.98,-2.02
+glycerol,glycerol=20,-4.04,-4.05
+glycerol,glycerol=30,-6.47,-6.19
+gly:sorb 1:1,glycerol=10;sorbitol=10,-3.16,-2.86
+gly:sorb 3:1,glycerol=15;sorbitol=5,-3.60,-3.46

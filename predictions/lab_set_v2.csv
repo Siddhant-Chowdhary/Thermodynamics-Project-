@@ -1,0 +1,6 @@
+sample,T_ours_C,T_ideal_C,T_UNIFAC_C,T_Dortmund_C,spread_K
+glycerol 30 (method check vs CRC),-9.69,-7.87,-6.47,-6.19,3.5
+PG 30,-11.05,-9.36,-5.69,-7.28,5.4
+sorbitol 40,-8.66,-6.31,-6.44,-2.10,6.6
+glycerol 15 + sorbitol 15,-7.51,-6.06,-5.22,-4.18,3.3
+PG 20 (if time),-6.35,-5.71,-3.97,-4.81,2.4
