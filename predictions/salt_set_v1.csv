@@ -1,0 +1,5 @@
+# primary = additive ln a_w; pass criterion for Shepard 1976: RMS <= 0.5 K for total solute <= 30 wt% (pre-registered 21 Oct)
+sample,glycerol_wt,NaCl_wt,T_primary_C,T_summation_C,T_ideal_polyol_C
+LAB session 2: glycerol 20 + NaCl 5,20,5,-9.42,-9.69,-8.68
+glycerol 10 + NaCl 0.9,10,0.9,-2.94,-2.95,-2.79
+glycerol 10 + NaCl 3,10,3,-4.35,-4.41,-4.19
