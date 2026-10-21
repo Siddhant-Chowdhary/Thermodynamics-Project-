@@ -15,12 +15,12 @@ from thermo.unifac import UNIFAC, DOUFSG, DOUFIP2016, UFSG, UFIP
 
 ROOT = Path(__file__).resolve().parents[1]
 R, TM, DH, DCP = 8.314462618, 273.15, 6009.5, 37.9
-MW = {"water": 18.015, "glycerol": 92.094, "propylene_glycol": 76.094, "sorbitol": 182.172}
+MW = {"ethylene_glycol": 62.068, "mannitol": 182.172, "water": 18.015, "glycerol": 92.094, "propylene_glycol": 76.094, "sorbitol": 182.172}
 # subgroup counts: original UNIFAC (CH3=1, CH2=2, CH=3, OH=14, H2O=16)
-ORIG = {"water": {16: 1}, "glycerol": {2: 2, 3: 1, 14: 3},
+ORIG = {"ethylene_glycol": {2: 2, 14: 2}, "mannitol": {2: 2, 3: 4, 14: 6}, "water": {16: 1}, "glycerol": {2: 2, 3: 1, 14: 3},
         "propylene_glycol": {1: 1, 2: 1, 3: 1, 14: 2}, "sorbitol": {2: 2, 3: 4, 14: 6}}
 # Dortmund: primary OH(P)=14, secondary OH(S)=81
-DORT = {"water": {16: 1}, "glycerol": {2: 2, 3: 1, 14: 2, 81: 1},
+DORT = {"ethylene_glycol": {2: 2, 14: 2}, "mannitol": {2: 2, 3: 4, 14: 2, 81: 4}, "water": {16: 1}, "glycerol": {2: 2, 3: 1, 14: 2, 81: 1},
         "propylene_glycol": {1: 1, 2: 1, 3: 1, 14: 1, 81: 1}, "sorbitol": {2: 2, 3: 4, 14: 2, 81: 4}}
 VERSIONS = {"UNIFAC": (ORIG, 0, UFIP, UFSG), "UNIFAC-Dortmund": (DORT, 1, DOUFIP2016, DOUFSG)}
 
