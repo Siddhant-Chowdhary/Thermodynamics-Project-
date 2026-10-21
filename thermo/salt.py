@@ -26,6 +26,7 @@ import numpy as np
 from .constants import M_WATER, solute
 from .sle import ln_aw_ice
 
+M_MAX_FIT = 4.83  # mol/kg, top of the CRC 2005 NaCl data used in the fit (22 wt%)
 _DATA = Path(__file__).resolve().parents[1] / "data" / "literature.csv"
 
 
@@ -38,7 +39,8 @@ def phi_nacl(m, params):
 def fit_nacl(path=_DATA, include_dcp=True, max_wt=23.3):
     """Fit (a, b, c) by linear least squares to the NaCl ice-liquidus rows."""
     rows = [r for r in csv.DictReader(open(path))
-            if r["solute"] == "NaCl" and r["phase_branch"] == "ice" and float(r["wt_percent"]) <= max_wt]
+            if r["solute"] == "NaCl" and r["phase_branch"] == "ice" and r["source_id"] == "CRC2005"
+            and float(r["wt_percent"]) <= max_wt]
     M = solute("NaCl")["molar_mass"]
     X, y, pts = [], [], []
     for r in rows:
@@ -73,5 +75,9 @@ class AdditiveSaltModel:
         w_salt = massfrac.get("NaCl", 0.0)
         if w_salt > 0:
             m = (w_salt / solute("NaCl")["molar_mass"]) / (w_water / 1000.0)   # mol/kg water
+            if m > M_MAX_FIT and not getattr(self, "_warned", False):
+                import warnings
+                warnings.warn(f"NaCl molality {m:.2f} mol/kg is above the fitted range ({M_MAX_FIT} mol/kg)")
+                self._warned = True
             ln_aw += -2 * m * (M_WATER / 1000.0) * phi_nacl(m, self.params)
         return ln_aw
