@@ -21,6 +21,8 @@ SOLUTES = {
     "propylene_glycol": {"formula": "C3H8O2",   "molar_mass": 76.094,  "n_OH": 2, "nu": 1},
     "glycerol":         {"formula": "C3H8O3",   "molar_mass": 92.094,  "n_OH": 3, "nu": 1},
     "sorbitol":         {"formula": "C6H14O6",  "molar_mass": 182.172, "n_OH": 6, "nu": 1},
+    "ethylene_glycol":  {"formula": "C2H6O2",   "molar_mass": 62.068,  "n_OH": 2, "nu": 1},
+    "mannitol":         {"formula": "C6H14O6",  "molar_mass": 182.172, "n_OH": 6, "nu": 1},
     "sucrose":          {"formula": "C12H22O11", "molar_mass": 342.297, "n_OH": 8, "nu": 1},
     "NaCl":             {"formula": "NaCl",     "molar_mass": 58.443,  "n_OH": 0, "nu": 2},
 }
