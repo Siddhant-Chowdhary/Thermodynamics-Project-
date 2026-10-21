@@ -18,7 +18,7 @@ from thermo.fit import fit_group_contribution, bootstrap, gibbs_duhem_residual
 DCP = True
 rows = list(csv.DictReader(open(ROOT / "data" / "literature.csv")))
 data = [({"glycerol": float(r["wt_percent"]) / 100}, float(r["T_freeze_C"]) + 273.15)
-        for r in rows if r["solute"] == "glycerol" and r["source_id"] == "CRC"
+        for r in rows if r["solute"] == "glycerol" and r["source_id"] in ("CRC", "CRC2005")
         and float(r["wt_percent"]) >= 2.0]
 
 fit = fit_group_contribution(data, include_dcp=DCP)
