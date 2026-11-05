@@ -1,0 +1,392 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=21mm,top=22mm,bottom=20mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=black]{hyperref}
+
+\definecolor{mid}{HTML}{5B6B72}
+\definecolor{pale}{HTML}{EEF3F4}
+\definecolor{acc}{HTML}{0D5D70}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\titleformat{\section}{\large\bfseries\color{acc}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\setlist{itemsep=1pt,topsep=2pt}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newtcolorbox{eqbox}{colback=white,colframe=acc,boxrule=0.5pt,arc=2pt,left=6pt,right=6pt,top=3pt,bottom=3pt}
+\newtcolorbox{result}{colback=pale,colframe=pale,boxrule=0pt,arc=2pt,left=8pt,right=8pt,top=4pt,bottom=4pt}
+\newcommand{\dfus}{\Delta_{\mathrm{fus}}}
+\newcommand{\aoh}{a_{\mathrm{OH}}}
+\newcommand{\file}[1]{\texttt{\small #1}}
+\newcommand{\aice}{\ln a_w^{\mathrm{ice}}}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\color{mid}Cryo-SLE calculations workbook}
+\fancyhead[R]{\footnotesize\color{mid}S. Chowdhary, 25B0347 --- CL207}
+\fancyfoot[C]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\begin{document}
+
+{\LARGE\bfseries\color{acc} Calculations workbook}\par\vspace{2pt}
+{\large Every thermodynamic equation in the project, worked by hand on one example}\par\vspace{4pt}
+{\small\color{mid} Siddhant Chowdhary (25B0347), CL207 optional project. Companion to the report and the handbook.}\par
+\vspace{6pt}
+
+\begin{result}
+\textbf{How to read this.} Each section gives one equation, the numbers going in, every intermediate step, and the result,
+which is then checked against data. All numbers here were produced by \file{analysis/worked\_calculations.py}. That script
+does each calculation twice, once line by line from the formula as written here and once with the project's own code,
+and stops with an error if the two disagree. So this workbook cannot drift from the code that made the report's results.
+Rerun it with \file{python analysis/worked\_calculations.py}.
+Numbers are rounded for printing; the calculations carry full precision.
+\end{result}
+
+\section*{Map: equation $\rightarrow$ where it is used $\rightarrow$ worked example}
+\small
+\begin{tabularx}{\textwidth}{@{}l L L r@{}}
+\toprule
+& Equation & Used for & Example result\\
+\midrule
+1 & Ice line: $\aice(T)$ & Every freezing calculation & $a_w=0.8512$ at $-15\,^\circ$C\\
+2 & Composition: wt\% $\rightarrow$ $x$, $m$ & Every calculation & $x_w=0.95338$ (20 wt\% glycerol)\\
+3 & Ideal SLE: $\ln x_w=\aice$ & Baseline & $-4.77\,^\circ$C (data $-5.46$)\\
+4 & Margules $\ln\gamma_w$, fit of $\aoh$ & The one fitted constant & $\aoh=-2414.9$ J/mol\\
+5 & Non-ideal SLE & Fitted solute & $-5.45\,^\circ$C (data $-5.46$)\\
+6 & Same, $A=n_\mathrm{OH}\aoh$ & Blind tests & EG 28 wt\%: $-12.31$ (data $-13.03$)\\
+7 & NaCl: $\ln a_w=-2m M_w\phi(m)$ & Salt in every mixture & saline: $-0.538\,^\circ$C\\
+8 & Additive mixing in $\ln a_w$ & Ternary tests, recipes & gly 25 + NaCl 5: $-11.71\,^\circ$C\\
+9 & Freeze concentration (water balance) & Salt in unfrozen liquid & saline, $-15\,^\circ$C: $18.79$ wt\% NaCl\\
+10 & Same, with glycerol & Recipe criterion 1 & 6.5 wt\% gly: $4.43$ wt\% NaCl\\
+11 & Cell: $a_w^{\mathrm{in}}=a_w^{\mathrm{ice}}$ & Salt inside the cell & sorbitol $18.79$ / gly $4.43$ wt\%\\
+12 & Osmotic coefficient at 25 $^\circ$C & Sorbitol test at 25 $^\circ$C & $\phi$: model $1.170$, data $1.026$\\
+13 & Gibbs--Helmholtz $a=h-Ts$ & Post-hoc explanation & $h=-7548$ J/mol per OH\\
+14 & Sparing ratio $-\mathrm{d}w_g/\mathrm{d}w_s$ & Design result & $+0.76$ / $-2.10$ / $+0.67$\\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\section*{Constants and the one fitted number}
+\begin{tabularx}{\textwidth}{@{}l l L@{}}
+\toprule
+Symbol & Value & Meaning / source\\
+\midrule
+$R$ & $8.314463$ J mol$^{-1}$ K$^{-1}$ & gas constant\\
+$T_m$ & $273.15$ K & melting point of ice at 1 atm\\
+$\dfus H$ & $6009.5$ J mol$^{-1}$ & enthalpy of fusion of ice at $T_m$\\
+$\Delta C_p$ & $37.9$ J mol$^{-1}$ K$^{-1}$ & $C_p(\text{liquid})-C_p(\text{ice})$ near 0 $^\circ$C\\
+$M_w$ & $18.015$ g mol$^{-1}$ & molar mass of water\\
+$\aoh$ & $-2414.9$ J mol$^{-1}$ per OH & \textbf{the only parameter fitted to polyol data} (glycerol, CRC, 2--40 wt\%)\\
+$a,b,c$ & $0.2602,\ 0.0523,\ 0.0061$ & NaCl osmotic coefficient, fitted to the NaCl--water ice line only\\
+\bottomrule
+\end{tabularx}
+
+Useful derived number, the cryoscopic constant: $K_f=RT_m^2M_w/\dfus H=8.314463\times273.15^2\times0.018015/6009.5=1.860$ K kg mol$^{-1}$
+(textbook value 1.86, so the constants are consistent).
+
+%-----------------------------------------------------------------
+\section{The ice line: how much water activity ice allows at $T$}
+\begin{eqbox}
+\[
+\aice(T)=\underbrace{-\frac{\dfus H}{R}\Big(\frac1T-\frac1{T_m}\Big)}_{\text{term 1: latent heat}}
+\;\underbrace{-\;\frac{\Delta C_p}{R}\Big(\frac{T_m}{T}-1+\ln\frac{T}{T_m}\Big)}_{\text{term 2: heat-capacity correction}}
+\tag{1}\]
+\end{eqbox}
+\textbf{Where it comes from.} At equilibrium $\mu_w^{\text{ice}}=\mu_w^{\text{liq}}=\mu_w^{\text{L},0}+RT\ln a_w$, so
+$RT\ln a_w=-\dfus G(T)$. $\dfus G$ is known only at $T_m$ (where it is zero), so it is carried to $T$ along
+warm ice $\rightarrow$ melt at $T_m$ $\rightarrow$ cool liquid (Sandler ch.~11; handbook \S2.2--2.3).
+
+\textbf{Example: $T=-15\,^\circ$C $=258.15$ K.}
+\begin{align*}
+\tfrac1T-\tfrac1{T_m} &= \tfrac1{258.15}-\tfrac1{273.15}=2.1272e-04\ \text{K}^{-1}\\
+\text{term 1} &= -\,722.78\ \text{K}\times2.1272e-04=-0.15375\\
+\tfrac{T_m}{T}-1+\ln\tfrac{T}{T_m} &= 0.001625\\
+\text{term 2} &= -\,4.5583\times0.001625=-0.00741\\
+\aice &= -0.15375-0.00741=\mathbf{-0.16116},\qquad a_w^{\text{ice}}=e^{-0.16116}=\mathbf{0.8512}
+\end{align*}
+\begin{result}
+Any liquid touching ice at $-15\,^\circ$C has $a_w=0.8512$, \emph{whatever is dissolved in it}. The $\Delta C_p$ term is
+$4.6$\% of the total here: small but not negligible at cryo temperatures, so it is kept everywhere.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{Composition: weight percent to mole fraction and molality}
+\textbf{Example: 20 wt\% glycerol} ($M=92.094$ g/mol), basis 100 g of solution:
+\begin{align*}
+n_g&=20/92.094=0.2172\ \text{mol},\qquad n_w=80/18.015=4.4407\ \text{mol}\\
+x_w&=\frac{n_w}{n_w+n_g}=\mathbf{0.95338},\quad x_g=0.04662,\qquad m_g=\frac{n_g}{0.080\ \text{kg}}=2.7146\ \text{mol/kg}
+\end{align*}
+Polyols use mole fractions (they enter the excess Gibbs energy model); NaCl uses molality (its $\phi(m)$ is written per kg water).
+
+%-----------------------------------------------------------------
+\section{Ideal freezing point (Raoult, $\gamma_w=1$)}
+\begin{eqbox}
+\[ \ln x_w=\aice(T)\qquad\text{solve for } T. \tag{2}\]
+\end{eqbox}
+Eq.~(2) cannot be solved for $T$ in closed form (because of term 2), so it is solved numerically. Define
+$g(T)=\ln x_w-\aice(T)$ and use Newton's method, $T_{k+1}=T_k-g(T_k)/g'(T_k)$, starting 1 K below $T_m$:
+
+\begin{center}\small
+\begin{tabular}{c c c}
+\toprule
+$k$ & $T_k$ (K) & $g(T_k)$\\
+\midrule
+0 & 272.1500 & -3.80e-02\\
+1 & 268.2812 & 1.02e-03\\
+2 & 268.3795 & 6.78e-07\\
+3 & 268.3796 & -1.59e-13\\
+\bottomrule
+\end{tabular}
+\end{center}
+(The project code uses Brent's method, which is safer for hard cases; it gives the same root.)
+\begin{result}
+Ideal: $T_f=268.380$ K $=\mathbf{-4.77\,^\circ}$\textbf{C}. CRC data: $-5.46\,^\circ$C. The ideal model is
+$0.7$ K too warm, so real glycerol depresses the freezing point \emph{more} than Raoult's law: $\gamma_w<1$.
+Dilute shortcut $\Delta T=-K_f m=-1.860\times2.7146=-5.05$ K, already off at this concentration.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{The activity model and fitting $\aoh$}
+\begin{eqbox}
+\begin{gather*}
+\frac{G^{ex}}{RT}=x_w\sum_i\alpha_i x_i,\qquad \alpha_i=\frac{A_i}{RT},\qquad A_i=n_{\mathrm{OH},i}\,\aoh\\
+\Rightarrow\quad \ln\gamma_w=(1-x_w)\sum_i\alpha_i x_i,\qquad \ln\gamma_i=\alpha_i x_w-x_w\sum_j\alpha_jx_j \tag{3}
+\end{gather*}
+\end{eqbox}
+For one solute, eq.~(3) is the one-constant Margules model, $RT\ln\gamma_w=A\,x_s^2$. Both $\ln\gamma$'s come from
+differentiating $nG^{ex}$, so they satisfy Gibbs--Duhem automatically. $A<0$ means water--solute attraction (hydrogen bonds), so $\gamma_w<1$.
+
+\textbf{What one data point says.} At the CRC freezing point of 20 wt\% glycerol, $T=267.69$ K:
+\begin{align*}
+\ln a_w &= \aice(267.69)=-0.05491 &&\text{(eq.~1: ice fixes $a_w$)}\\
+\ln\gamma_w &= \ln a_w-\ln x_w=-0.05491-(-0.04775)=-0.00716,\quad \gamma_w=0.9929\\
+\aoh &= \frac{RT\ln\gamma_w}{n_\mathrm{OH}\,x_g^2}=\frac{8.314463\times267.69\times(-0.00716)}{3\times0.04662^2}=-2444\ \text{J/mol per OH}
+\end{align*}
+\textbf{The fit.} Doing this properly means choosing $\aoh$ to minimise $\sum(T_f^{\text{model}}-T_f^{\text{data}})^2$ over all
+$19$ CRC glycerol points (2--40 wt\%) at once (\file{analysis/fit\_literature.py}):
+\begin{result}
+$\aoh=\mathbf{-2414.9}$ \textbf{J mol$^{-1}$ per OH}; RMSE $0.017$ K, worst point $0.041$ K. The single-point
+estimate ($-2444$) is within 2\% of it. This number is then frozen: it is never refitted on any test data.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{Non-ideal freezing point of the fitted solute}
+\begin{eqbox}
+\[ \ln x_w+\frac{A}{RT}(1-x_w)^2=\aice(T),\qquad A=3\aoh=-7244.7\ \text{J/mol for glycerol}\tag{4}\]
+\end{eqbox}
+Newton on $g(T)=\ln x_w+\frac{A}{RT}x_g^2-\aice(T)$ with $x_w=0.95338$:
+\begin{center}\small
+\begin{tabular}{c c c}
+\toprule
+$k$ & $T_k$ (K) & $g(T_k)$\\
+\midrule
+0 & 272.1500 & -4.50e-02\\
+1 & 267.5605 & 1.43e-03\\
+2 & 267.6981 & 1.34e-06\\
+3 & 267.6982 & 2.59e-13\\
+\bottomrule
+\end{tabular}
+\end{center}
+At the root: $\alpha=A/RT=-3.2549$; $\ln\gamma_w=\alpha x_g^2=-0.00708$ ($\gamma_w=0.9929$);
+glycerol's own $\ln\gamma_g=\alpha x_w^2=-2.9585$, a large negative deviation.
+\begin{result}
+$T_f=267.698$ K $=\mathbf{-5.45\,^\circ}$\textbf{C} vs data $-5.46\,^\circ$C. A correction of under 1\% in $\gamma_w$
+moves $T_f$ by 0.7 K, which is why the activity coefficient is the whole problem.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{A blind prediction: ethylene glycol, 28 wt\%}
+Same eq.~(4), nothing refitted: ethylene glycol has 2 OH, so $A=2\aoh=-4829.8$ J/mol. Composition ($M=62.068$):
+$x_w=0.89857$.
+\begin{center}\small
+\begin{tabular}{l c c}
+\toprule
+Model & $T_f$ ($^\circ$C) & error vs CRC (K)\\
+\midrule
+Ideal, eq.~(2) & -10.29 & +2.74\\
+Per-OH, eq.~(4) & \textbf{-12.31} & \textbf{+0.72}\\
+CRC data & -13.03 & ---\\
+\bottomrule
+\end{tabular}
+\end{center}
+Across all 2--40 wt\% EG points this gives the Table~1 result of the report (RMSE 0.83 K vs ideal 2.49, UNIFAC 3.99).
+The same calculation with $n_\mathrm{OH}=6$ is what overstates sorbitol (section~12).
+
+%-----------------------------------------------------------------
+\section{Salt: NaCl through an osmotic coefficient}
+\begin{eqbox}
+\[ \ln a_w^{\mathrm{NaCl}}=-\nu\, m\, M_w\,\phi(m),\quad \nu=2,\qquad
+\phi(m)=1-\frac{a\sqrt m}{1+\sqrt m}+b\,m+c\,m^2 \tag{5}\]
+\end{eqbox}
+The $\sqrt m$ term has the Debye--H\"uckel shape (ion clouds make $\phi<1$ when dilute); $b,c$ capture the rise at high $m$.
+$a,b,c$ were fitted to the NaCl--water ice line only (17 CRC points).
+
+\textbf{Example: isotonic saline, 0.9 wt\%} ($M=58.443$):
+\begin{align*}
+m&=\frac{0.9/58.443}{0.0991\ \text{kg}}=0.1554\ \text{mol/kg},\quad \sqrt m=0.3942\\
+\phi&=1-\frac{0.2602\times0.3942}{1+0.3942}+0.0523\times0.1554+0.0061\times0.1554^2=0.9347\\
+\ln a_w&=-2\times0.1554\times0.018015\times0.9347=-0.005233
+\end{align*}
+\begin{result}
+Setting $\ln a_w=\aice(T)$ gives $T_f=\mathbf{-0.538\,^\circ}$\textbf{C}. Ideal-ion shortcut $-K_f\nu m=-0.578$ K;
+with $\phi$, $-0.540$ K. Saline freezes at about $-0.54\,^\circ$C, the standard value.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{Mixtures: additive in $\ln a_w$}
+\begin{eqbox}
+\[ \ln a_w^{\mathrm{mix}}=\underbrace{\ln x_w+(1-x_w)\textstyle\sum_i\alpha_ix_i}_{\text{polyols, eq. 3 (water + polyols only)}}
+\;+\;\underbrace{\left(-2mM_w\phi(m)\right)}_{\text{NaCl, eq. 5}} \;=\;\aice(T)\tag{6}\]
+\end{eqbox}
+Pre-registered on 21 Oct, before any ternary data: no salt--polyol cross term. Bower \& Robinson's (1963) ternary data put the
+neglected term at 0.6--5\% of the osmolality.
+
+\textbf{Example: the committed lab sample, glycerol 25 + NaCl 5 wt\%} (70 g water):
+$x_w$(water + glycerol) $=0.93470$; $m_{\text{NaCl}}=1.2222$ mol/kg, $\phi=0.9365$. At the root:
+\[
+\ln a_w=\underbrace{-0.08174}_{\text{glycerol}}\;+\;\underbrace{(-0.04124)}_{\text{NaCl}}=-0.12298=\aice(T_f)
+\]
+\begin{result}
+$T_f=\mathbf{-11.71\,^\circ}$\textbf{C}, identical to the value committed in \file{predictions/lab\_set\_v3\_glycerol\_nacl.csv}
+($-11.71$) before any measurement. Glycerol supplies two-thirds of the water-activity drop.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{Freeze concentration: what is left liquid at $-15\,^\circ$C}
+Ice is pure water, so as water freezes out, every solute stays in a shrinking liquid. Freezing stops when the liquid's
+$a_w$ has fallen to the ice value. The unknown is the mass of liquid water left, $W$; the moles of solute are fixed.
+\begin{eqbox}
+\[ \ln a_w^{\mathrm{mix}}\big(n_1,n_2,\dots;\,W\big)=\aice(T)\quad\text{solve for } W \tag{7}\]
+\end{eqbox}
+\textbf{Example 1: saline only.} With only NaCl, eq.~(7) is $-2mM_w\phi(m)=\aice(258.15)=-0.16116$, an equation in $m$ alone:
+\begin{align*}
+m^{*}&=3.960\ \text{mol/kg}\ (\phi=1.1296)\\
+\text{unfrozen water}&=W/W_0=m_0/m^{*}=0.1554/3.960=\mathbf{3.92\,\%}\\
+\text{NaCl in the liquid}&=\frac{m^{*}M}{1+m^{*}M}=\mathbf{18.79\ wt\%}
+\end{align*}
+96\% of the water is ice; the cells sit in near-brine. ($m^{*}$ is below the top of the fitted NaCl range, $4.83$ mol/kg.)
+
+%-----------------------------------------------------------------
+\section{Freeze concentration with glycerol (recipe criterion 1)}
+\textbf{Example 2: glycerol 6.5 wt\% in the saline.} Basis 100 g: $n_g=0.07058$ mol, $n_{\text{NaCl}}=0.01540$ mol,
+$W_0=92.60$ g. Unknown $W$ (g of liquid water). For a trial $W$:
+$x_w=\frac{W/M_w}{W/M_w+n_g}$ and $m=\frac{n_{\text{NaCl}}}{W/1000}$; put both into eq.~(6) and solve eq.~(7) for $W$ (Brent's method):
+\begin{align*}
+W&=12.917\ \text{g}\quad(\text{unfrozen water } 13.95\%)\\ x_w&=0.91039,\quad m_{\text{NaCl}}=1.192,\quad m_g=5.464\ \text{mol/kg}\\
+\ln a_w&=\underbrace{-0.12099}_{\text{glycerol}}+\underbrace{(-0.04017)}_{\text{NaCl}}=-0.16116=\aice\quad\checkmark\\
+\text{NaCl in liquid}&=\frac{0.9}{12.917+6.5+0.9}=\mathbf{4.43\ wt\%}\quad(\text{glycerol } 32.0\ \text{wt\%})
+\end{align*}
+\begin{result}
+The ice still sets the same $a_w$; glycerol just takes over most of the job salt was doing. 6.5 wt\% is the least
+glycerol that holds NaCl at the 4.41 wt\% damage limit (Lovelock 1953) at $-15\,^\circ$C, by this criterion.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{Inside the cell}
+Water crosses the membrane freely, so at (slow-cooling) equilibrium
+\begin{eqbox}
+\[ \ln a_w^{\mathrm{in}}\Big(\tfrac{n_c}{W_c},\ m_g\Big)=\ln a_w^{\mathrm{out}}=\aice(T)\tag{8}\]
+\end{eqbox}
+Assumptions: the cell's own solutes $n_c$ are represented as NaCl at the isotonic level ($m_0=0.1554$ mol/kg);
+glycerol penetrates (same molality inside and out); sorbitol and NaCl stay out. Unknown: cell water $W_c/W_{c,0}$.
+
+\textbf{(a) Sorbitol 9 wt\% outside.} Nothing permeant, so the inside holds only $n_c$, and eq.~(8) is \emph{the same equation
+as the saline case}:
+\[ m^{\mathrm{in}}=m^{*}=3.960,\qquad W_c/W_{c,0}=0.1554/3.960=0.0392,\qquad \text{salt inside}=\mathbf{18.79\ wt\%}. \]
+Outside, the sorbitol has cut NaCl to $4.28$ wt\%, but the inside is as salty as with no protectant at all.
+
+\textbf{(b) Glycerol 6.5 wt\%.} Glycerol enters at $m_g=5.464$ mol/kg (from section 10), sharing the water-activity drop:
+\[ W_c/W_{c,0}=0.1303,\qquad m^{\mathrm{in}}=0.1554/0.1303=1.192,\qquad \text{salt inside}=\mathbf{4.43\ wt\%}. \]
+\begin{result}
+Because ice fixes $a_w$ on \emph{both} sides of the membrane, only a solute that gets in can lower the salt inside. This is
+Pegg's ``must penetrate'' (2007), derived from $\mu$-equality rather than assumed. It holds for any impermeant solute,
+not only in this simplified cell.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{Sorbitol at 25 $^\circ$C: osmotic coefficient}
+Away from ice, isopiestic data report the osmotic coefficient, defined by
+\begin{eqbox}
+\[ \ln a_w=-\phi\, m\, M_w\quad(\nu=1)\qquad\Leftrightarrow\qquad \phi=-\frac{\ln a_w}{mM_w}\tag{9}\]
+\end{eqbox}
+\textbf{Example: Bower \& Robinson (1963), $m=1.8990$ mol/kg, measured $\phi=1.026$.} $x_s=0.03308$.
+\begin{align*}
+\text{model: }\ln a_w&=\ln x_w+\frac{6\aoh}{R\times298.15}x_s^2=-0.04003\ \Rightarrow\ \phi=\mathbf{1.170}\\
+\text{ideal: }\phi&=-\ln x_w/(mM_w)=0.983
+\end{align*}
+Turn it round: the data's $\ln a_w=-1.026\times1.8990\times0.018015=-0.03510$ implies
+$a=\frac{(\ln a_w-\ln x_w)RT}{6x_s^2}=\mathbf{-552}$ J/mol per OH, about a quarter of glycerol's $-2414.9$.
+\begin{result}
+The per-OH model predicts $\phi-1$ about 6$\times$ too large here; ideal is closer. The constant does not transfer to sorbitol.
+Section 13 separates how much of this is temperature and how much is the molecule.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{Gibbs--Helmholtz: splitting $a$ into $h$ and $s$ (post hoc)}
+\begin{eqbox}
+\[ a(T)=h-Ts\qquad\Rightarrow\qquad s=-\frac{a(T_2)-a(T_1)}{T_2-T_1},\qquad h=a(T_1)+T_1s\tag{10}\]
+\end{eqbox}
+$a$ is an interaction \emph{free} energy, so it has an enthalpy part (hydrogen-bond strength) and an entropy part (ordering of water).
+Sucrose is the one solute with good data at two temperatures (CRC freezing points; Robinson \& Stokes 1949 at 25 $^\circ$C).
+Implied $a$ at each point is found as in section 4, and medians are compared in matched molality windows:
+
+\begin{center}\small
+\begin{tabular}{l c c c c c}
+\toprule
+Window (mol/kg) & $a(T_1)$, $T_1$ & $a(298.15)$ & $s=-\Delta a/\Delta T$ & $h=a_1+T_1s$ & $T_1 s$\\
+\midrule
+0.3-1.0 & $-2162$, 271.9 K & $-1642$ & $-\frac{-1642-(-2162)}{26.25}=-19.81$ & $-7548$ & $-5386$\\
+1.0-2.2 & $-2271$, 269.8 K & $-1847$ & $-\frac{-1847-(-2271)}{28.35}=-14.96$ & $-6306$ & $-4035$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Units: $a,h$ in J/mol per OH; $s$ in J/mol/K per OH. (The script's unrounded values are $h=-7552$ and $-6305$.)
+\begin{result}
+$h\approx-6$ to $-8$ kJ/mol per OH (the size of a water hydrogen bond), with an entropy penalty of about $-15$ to $-20$
+J/mol/K. Warming makes $-Ts$ bigger, so the attraction weakens by about 20\% from the freezing line to 25 $^\circ$C. That
+is far too little to explain sorbitol ($-1800$ for sucrose vs $-552$ for sorbitol at the same 25 $^\circ$C), so sorbitol's
+failure is a molecule effect.
+\end{result}
+
+%-----------------------------------------------------------------
+\section{The design number: glycerol saved per gram of sorbitol}
+For each sorbitol dose $w_s$, find the least glycerol $w_g$ that meets a criterion at $-15\,^\circ$C (sections 10--11 inside
+a root-finder). The sparing ratio is the slope $-\mathrm{d}w_g/\mathrm{d}w_s$, read here over the first 2 wt\% of sorbitol:
+
+\begin{center}\small
+\begin{tabular}{l c c c c}
+\toprule
+Criterion & $w_g$ at $w_s=0$ & $w_g$ at $w_s=2$ & ratio $(w_g^0-w_g^2)/2$ & linear fit (range)\\
+\midrule
+NaCl outside $\le$ 4.41 wt\% & 6.54 & 5.02 & \textbf{+0.76} & +0.75 (0--8)\\
+salt inside $\le$ 4.41 wt\% & 6.54 & 10.73 & \textbf{-2.10} & -2.18 (0--10)\\
+unfrozen water $\ge$ 25\% & 12.22 & 10.89 & \textbf{+0.67} & +0.66 (0--12)\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{result}
+Positive means sorbitol saves glycerol; negative means it costs glycerol. With all three criteria at once, the binding constraint switches
+from ``unfrozen water'' to ``salt inside'' and the best mix is sorbitol $2.06$ + glycerol $10.86$ wt\%, against
+$12.22$ wt\% glycerol alone ($11$\% less glycerol). Whether sorbitol helps depends on which injury mechanism
+limits survival, and the model puts a number on each case.
+\end{result}
+
+\section*{Reproduce}
+\small
+\begin{tabular}{@{}l l@{}}
+All values in this workbook & \file{python analysis/worked\_calculations.py} (asserts hand = code)\\
+Fit of $\aoh$ & \file{analysis/fit\_literature.py}\\
+Freeze concentration, cell, criteria & \file{analysis/freeze\_concentration\_cells.py}\\
+Sorbitol at 25 $^\circ$C & \file{analysis/sorbitol\_25C.py}\\
+Gibbs--Helmholtz & \file{analysis/posthoc\_per\_molecule.py}\\
+Everything & \file{python run\_all.py}\\
+\end{tabular}
+
+\end{document}
