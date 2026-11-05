@@ -1,0 +1,15 @@
+# Inputs for the freezing-point uncertainty budget (analysis/uncertainty_budget.py).
+# status: ASSUMED = typical value used for the pre-lab preview, REPLACE with a measured value; SPEC = from datasheet; MEASURED = from our own data.
+key,value,unit,status,note
+probe_resolution,0.0625,K,SPEC,DS18B20 12-bit resolution (datasheet)
+cal_scatter_sd,0.02,K,ASSUMED,SD of one probe's readings in stirred ice-water (replace from calibration CSV)
+cal_n_readings,60,-,ASSUMED,number of readings averaged for the offset
+ice_point_realisation,0.01,K,ASSUMED,how well a home ice-water bath realises 0 C (crushed ice + water stirred)
+probe_nonlinearity,0.10,K,ASSUMED,offset change between 0 C and -10 C; replace from a second calibration point (e.g. NaCl solution of CRC freezing point)
+balance_resolution,0.01,g,ASSUMED,readability of the balance used
+sample_mass,20.0,g,ASSUMED,total sample mass made up
+purity_water_fraction,0.005,mass fraction,ASSUMED,max water content of the solute as supplied (glycerol is hygroscopic); treated as rectangular
+supercooling,2.0,K,ASSUMED,depth of supercooling before nucleation (read from each trace)
+supercool_corr_unc_frac,0.25,-,ASSUMED,relative uncertainty of the supercooling correction
+duplicate_difference,0.15,K,ASSUMED,difference between the two runs of a sample (replace per sample)
+peak_pick_sd,0.03,K,ASSUMED,scatter of raw points around the post-recalescence maximum (find_freezing_point reports it)
