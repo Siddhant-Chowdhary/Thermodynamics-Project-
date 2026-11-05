@@ -23,6 +23,12 @@ SOLUTES = {
     "sorbitol":         {"formula": "C6H14O6",  "molar_mass": 182.172, "n_OH": 6, "nu": 1},
     "ethylene_glycol":  {"formula": "C2H6O2",   "molar_mass": 62.068,  "n_OH": 2, "nu": 1},
     "mannitol":         {"formula": "C6H14O6",  "molar_mass": 182.172, "n_OH": 6, "nu": 1},
+    "methanol":         {"formula": "CH4O",     "molar_mass": 32.042,  "n_OH": 1, "nu": 1},
+    "ethanol":          {"formula": "C2H6O",    "molar_mass": 46.069,  "n_OH": 1, "nu": 1},
+    "1-propanol":       {"formula": "C3H8O",    "molar_mass": 60.096,  "n_OH": 1, "nu": 1},
+    "2-propanol":       {"formula": "C3H8O",    "molar_mass": 60.096,  "n_OH": 1, "nu": 1},
+    "glucose":          {"formula": "C6H12O6",  "molar_mass": 180.156, "n_OH": 5, "nu": 1},
+    "fructose":         {"formula": "C6H12O6",  "molar_mass": 180.156, "n_OH": 5, "nu": 1},
     "sucrose":          {"formula": "C12H22O11", "molar_mass": 342.297, "n_OH": 8, "nu": 1},
     "NaCl":             {"formula": "NaCl",     "molar_mass": 58.443,  "n_OH": 0, "nu": 2},
 }
