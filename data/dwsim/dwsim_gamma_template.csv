@@ -1,0 +1,11 @@
+# Fill from DWSIM (Sid). Water + glycerol, liquid stream at 1 atm. Our values (pip thermo 0.6.1) are in the right-hand columns for comparison.
+# Pass: |DWSIM - ours| / ours < 0.005 (0.5 %) for gamma_w, and gamma_w > 1 confirmed for UNIFAC.
+glycerol_wt,x_water,T_K,gamma_w_ours_UNIFAC,gamma_w_DWSIM_UNIFAC,gamma_w_ours_Dortmund,gamma_w_DWSIM_Dortmund,DWSIM_version,screenshot_file
+10,0.9787,273.15,1.0021,,1.0018,,,
+20,0.9534,273.15,1.0075,,1.0080,,,
+30,0.9226,273.15,1.0150,,1.0205,,,
+40,0.8846,273.15,1.0227,,1.0420,,,
+10,0.9787,298.15,1.0019,,1.0025,,,
+20,0.9534,298.15,1.0072,,1.0113,,,
+30,0.9226,298.15,1.0147,,1.0286,,,
+40,0.8846,298.15,1.0227,,1.0580,,,
