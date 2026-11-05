@@ -21,7 +21,7 @@ and then tested it on other molecules and on glycerol + salt mixtures without ch
 I wanted people to see the thermodynamics, not just read it, so I built a small app where you play cryobiologist.
 Slide glycerol, sorbitol and temperature and watch the ice take over: how much water stays liquid and how salty it
 gets outside and inside the cell. Try 9 wt% sorbitol with no glycerol and see the outside stay safe while the
-inside turns to brine. It runs the same code as the report, so every number is real. (Locally: `streamlit run app.py`.)
+inside turns to brine. It runs the same code as the report, so every number is real. Also, the graphs are interactive and keep changing as we change the conditions, so sure do have a go!! 
 
 **Easiest: in Google Colab (nothing to install)**
 
