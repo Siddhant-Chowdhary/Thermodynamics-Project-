@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+# copyrighted source extracts: keep local, never commit
+data/sources/
