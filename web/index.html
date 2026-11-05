@@ -1,0 +1,228 @@
+<title>Cryo Recipe Explorer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+/* Layout: lab-notebook console — controls left, live readouts right, two phase charts below, method + code check at the foot */
+:root{
+  --bg:#f2f5f6; --panel:#ffffff; --ink:#14232a; --muted:#5b6b72; --rule:#d5dee1;
+  --accent:#0d5d70; --warm:#a24a22; --ok:#2f7a4a; --bad:#a3302b; --chip-ok:#e4f1e8; --chip-bad:#f6e3e1; --grid:#e3e9eb;
+  --display:"IBM Plex Serif", Georgia, serif; --body:"IBM Plex Sans", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f171a; --panel:#152126; --ink:#e3ecee; --muted:#93a5ab; --rule:#28383e;
+  --accent:#5fb6c9; --warm:#e08a5f; --ok:#6cc08b; --bad:#e57a72; --chip-ok:#1d3326; --chip-bad:#3a2220; --grid:#1f2d32; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f171a; --panel:#152126; --ink:#e3ecee; --muted:#93a5ab; --rule:#28383e;
+  --accent:#5fb6c9; --warm:#e08a5f; --ok:#6cc08b; --bad:#e57a72; --chip-ok:#1d3326; --chip-bad:#3a2220; --grid:#1f2d32; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px;display:grid;gap:20px}
+header h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,36px);margin:0;text-wrap:balance;letter-spacing:-.01em}
+header p{margin:6px 0 0;color:var(--muted);max-width:68ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px}
+@media (max-width:780px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:18px;min-width:0}
+.panel h2{font-size:13px;font-family:var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 12px}
+.ctl{display:grid;gap:4px;margin-bottom:14px}
+.ctl label{display:flex;justify-content:space-between;font-weight:500}
+.ctl output{font-family:var(--mono);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+button,select{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);border-radius:4px;padding:5px 10px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.reads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.read{border-top:2px solid var(--rule);padding-top:8px}
+.read .k{font-size:12.5px;color:var(--muted)}
+.read .v{font-family:var(--mono);font-size:26px;font-variant-numeric:tabular-nums}
+.read .v small{font-size:14px;color:var(--muted)}
+.chip{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:1px 7px;border-radius:10px;margin-top:4px}
+.chip.ok{background:var(--chip-ok);color:var(--ok)} .chip.bad{background:var(--chip-bad);color:var(--bad)}
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+.charts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:780px){.charts{grid-template-columns:1fr}}
+svg text{fill:var(--muted);font-family:var(--mono);font-size:11px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:6px}
+.sw{display:inline-block;width:18px;height:0;border-top:2.5px solid;vertical-align:middle;margin-right:5px}
+.method{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px}
+@media (max-width:780px){.method{grid-template-columns:1fr}}
+.method p{margin:0 0 8px;max-width:66ch}
+.eq{font-family:var(--mono);font-size:13px;background:var(--bg);padding:8px 10px;border-radius:4px;overflow-x:auto;white-space:nowrap}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:5px 6px;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--muted)}
+td.m{font-family:var(--mono)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">CL207 project · solid–liquid equilibrium</div>
+    <h1>Cryo Recipe Explorer</h1>
+    <p>Choose a cryoprotectant recipe in 0.9 wt% saline and a storage temperature. The page solves ice–solution equilibrium and shows how much water stays liquid and how salty it gets, outside the cell and inside it.</p>
+  </header>
+
+  <div class="grid">
+    <section class="panel" aria-label="Recipe">
+      <h2>Recipe and storage</h2>
+      <div class="ctl"><label for="gly">Glycerol (penetrates cells) <output id="glyv"></output></label><input id="gly" type="range" min="0" max="30" step="0.25" value="2.75"></div>
+      <div class="ctl"><label for="sor">Sorbitol (stays outside) <output id="sorv"></output></label><input id="sor" type="range" min="0" max="15" step="0.25" value="5"></div>
+      <div class="ctl"><label for="tt">Storage temperature <output id="ttv"></output></label><input id="tt" type="range" min="-25" max="-1" step="0.5" value="-15"></div>
+      <div class="row"><label for="model">Water activity model</label>
+        <select id="model"><option value="oh">Per-OH (this project)</option><option value="ideal">Ideal solution</option></select></div>
+      <div class="presets" aria-label="Presets">
+        <button data-g="0" data-s="0">Saline only</button>
+        <button data-g="6.5" data-s="0">Glycerol 6.5</button>
+        <button data-g="0" data-s="9">Sorbitol 9</button>
+        <button data-g="2.75" data-s="5">Glycerol 2.75 + sorbitol 5</button>
+        <button data-g="10.86" data-s="2.06">All-criteria optimum</button>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Results">
+      <h2 id="rhead">At −15 °C</h2>
+      <div class="reads">
+        <div class="read"><div class="k">Freezing point of the recipe</div><div class="v" id="tf"></div></div>
+        <div class="read"><div class="k">Water still liquid</div><div class="v" id="uw"></div><span class="chip" id="uwc"></span></div>
+        <div class="read"><div class="k">NaCl outside the cell</div><div class="v" id="so"></div><span class="chip" id="soc"></span></div>
+        <div class="read"><div class="k">Salt inside the cell</div><div class="v" id="si"></div><span class="chip" id="sic"></span></div>
+      </div>
+      <p class="note" id="msg"></p>
+    </section>
+  </div>
+
+  <div class="charts">
+    <section class="panel" aria-label="Salt chart">
+      <h2>Salt vs temperature</h2>
+      <svg id="c1" viewBox="0 0 460 260" width="100%" role="img" aria-label="Salt outside and inside the cell against temperature"></svg>
+      <div class="legend"><span><i class="sw" style="border-color:var(--accent)"></i>NaCl outside</span><span><i class="sw" style="border-color:var(--warm);border-top-style:dashed"></i>salt inside cell</span><span><i class="sw" style="border-color:var(--muted);border-top-width:1px"></i>haemolysis onset 4.41 wt%</span></div>
+    </section>
+    <section class="panel" aria-label="Unfrozen chart">
+      <h2>Liquid water vs temperature</h2>
+      <svg id="c2" viewBox="0 0 460 260" width="100%" role="img" aria-label="Unfrozen water fraction against temperature"></svg>
+      <div class="legend"><span><i class="sw" style="border-color:var(--accent)"></i>water still liquid</span><span><i class="sw" style="border-color:var(--muted);border-top-width:1px"></i>25 % (Mazur et al. 1981)</span></div>
+    </section>
+  </div>
+
+  <section class="panel method" aria-label="Method">
+    <div>
+      <h2>How it is calculated</h2>
+      <p>Ice is pure water, so at equilibrium the liquid's water activity is fixed by temperature alone:</p>
+      <p class="eq">ln a_w = −(ΔH_fus/R)(1/T − 1/T_m) − (ΔC_p/R)(T_m/T − 1 + ln T/T_m)</p>
+      <p>Water freezes out until the remaining liquid reaches that activity. Polyols use one constant per OH group, a_OH = −2414.9 J/mol, fitted on glycerol only; NaCl uses an osmotic coefficient fitted to its freezing curve; contributions add in ln a_w.</p>
+      <p>A cell at slow-cooling equilibrium has the same a_w inside. Glycerol enters and shares the load; sorbitol and NaCl stay out, so with sorbitol alone the cell interior is as salty as in plain saline.</p>
+      <p class="note">Equilibrium only: no cooling-rate effects, intracellular ice or toxicity. Criteria: Lovelock (1953) for 4.41 wt% NaCl; Mazur, Rall & Rigopoulos (1981) for 25 % unfrozen water.</p>
+    </div>
+    <div>
+      <h2>Check against the Python code</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>At −15 °C</th><th>Liquid water</th><th>NaCl out</th><th>Salt in</th></tr></thead>
+        <tbody id="check"></tbody>
+      </table></div>
+      <p class="note">Top line of each pair: this page. Bottom line: <code>analysis/freeze_concentration_cells.py</code>.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const R=8.314462618, DH=6009.5, DCP=37.9, TM=273.15, MW=18.015;
+const MM={glycerol:92.094, sorbitol:182.172, NaCl:58.443}, NOH={glycerol:3, sorbitol:6};
+const AOH=-2414.9, PHI=[0.26019801864242426,0.05234972761612506,0.006090885448441707];
+const BASE=0.9, MS0=(BASE/100)/(MM.NaCl/1000)/(1-BASE/100);
+const LIMIT=4.41, UMIN=0.25;
+const $=id=>document.getElementById(id);
+
+function lnIce(T){return -(DH/R)*(1/T-1/TM)-(DCP/R)*(TM/T-1+Math.log(T/TM));}
+// masses in grams; water in grams
+function lnAw(m,T,model){
+  const nw=m.water/MW; let val=0;
+  const polys=["glycerol","sorbitol"].filter(k=>m[k]>0);
+  if(polys.length){
+    let tot=nw; polys.forEach(k=>tot+=m[k]/MM[k]);
+    const xw=nw/tot; let lg=0;
+    if(model==="oh") polys.forEach(k=>lg+=NOH[k]*AOH/(R*T)*(m[k]/MM[k]/tot));
+    val+=Math.log(xw)+(1-xw)*lg;
+  }
+  if(m.NaCl>0){const mo=m.NaCl/MM.NaCl/(m.water/1000), s=Math.sqrt(mo);
+    val+=-2*mo*MW/1000*(1-PHI[0]*s/(1+s)+PHI[1]*mo+PHI[2]*mo*mo);}
+  return val;
+}
+function bisect(f,a,b,n=80){let fa=f(a);for(let i=0;i<n;i++){const c=(a+b)/2,fc=f(c);if((fc>0)===(fa>0)){a=c;fa=fc}else b=c}return (a+b)/2;}
+function recipe(g,s){return {glycerol:g,sorbitol:s,NaCl:BASE,water:100-g-s-BASE};}
+function freezing(g,s,model){const m=recipe(g,s);
+  const f=T=>lnAw(m,T,model)-lnIce(T); if(f(TM-1e-9)>=0) return TM; return bisect(f,150,TM-1e-9);}
+function state(g,s,TC,model){
+  const m=recipe(g,s), T=TC+273.15, w0=m.water;
+  let phi=0;
+  const f=p=>lnAw({...m,water:w0*(1-p)},T,model)-lnIce(T);
+  if(f(0)>0) phi=bisect(f,0,0.9999);
+  const liq={...m,water:w0*(1-phi)};
+  const liqMass=liq.water+g+s+BASE;
+  const saltOut=100*BASE/liqMass;
+  const mg=g/MM.glycerol/(liq.water/1000);
+  const target=lnAw(liq,T,model);
+  const fin=lw=>{const W=Math.exp(lw), ms=MS0/W;
+    return lnAw({NaCl:ms*MM.NaCl, glycerol:mg*MM.glycerol, sorbitol:0, water:1000},T,model)-target;};
+  const W=Math.exp(bisect(fin,Math.log(1e-3),Math.log(1e4)));
+  const ms=MS0/W, saltIn=100*ms*MM.NaCl/(1000+ms*MM.NaCl+mg*MM.glycerol);
+  return {unfrozen:1-phi, saltOut, saltIn, W};
+}
+
+const fmt=(x,d=1)=>x.toFixed(d);
+function chip(el,ok,okT,badT){el.className="chip "+(ok?"ok":"bad");el.textContent=ok?okT:badT;}
+
+function chart(svg,series,opts){
+  const W=460,H=260,L=44,Rr=12,T0=14,B=34, xmin=-25,xmax=-1;
+  const x=t=>L+(xmax-t)/(xmax-xmin)*(W-L-Rr);       // colder to the right
+  const y=v=>T0+(1-(v-opts.ymin)/(opts.ymax-opts.ymin))*(H-T0-B);
+  let h="";
+  opts.yticks.forEach(v=>{h+=`<line x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`;});
+  [-1,-5,-10,-15,-20,-25].forEach(t=>{h+=`<text x="${x(t)}" y="${H-B+16}" text-anchor="middle">${t}</text>`;});
+  h+=`<text x="${(L+W-Rr)/2}" y="${H-4}" text-anchor="middle">temperature (°C)</text>`;
+  h+=`<text x="12" y="${T0+(H-T0-B)/2}" transform="rotate(-90 12 ${T0+(H-T0-B)/2})" text-anchor="middle">${opts.ylab}</text>`;
+  h+=`<line x1="${L}" x2="${W-Rr}" y1="${y(opts.ref)}" y2="${y(opts.ref)}" stroke="var(--muted)" stroke-width="1"/>`;
+  h+=`<line x1="${x(opts.t)}" x2="${x(opts.t)}" y1="${T0}" y2="${H-B}" stroke="var(--rule)" stroke-width="1.5"/>`;
+  series.forEach(sr=>{const d=sr.pts.map((p,i)=>(i?"L":"M")+x(p[0]).toFixed(1)+","+y(Math.min(opts.ymax,p[1])).toFixed(1)).join("");
+    h+=`<path d="${d}" fill="none" stroke="${sr.color}" stroke-width="2.2" ${sr.dash?'stroke-dasharray="6 4"':""}/>`;
+    const cur=sr.pts.find(p=>Math.abs(p[0]-opts.t)<1e-6); if(cur) h+=`<circle cx="${x(cur[0])}" cy="${y(Math.min(opts.ymax,cur[1]))}" r="4" fill="${sr.color}"/>`;});
+  svg.innerHTML=h;
+}
+
+function update(){
+  const g=+$("gly").value, s=+$("sor").value, TC=+$("tt").value, model=$("model").value;
+  $("glyv").textContent=fmt(g,2)+" wt%"; $("sorv").textContent=fmt(s,2)+" wt%"; $("ttv").textContent=fmt(TC,1)+" °C";
+  $("rhead").textContent="At "+fmt(TC,1).replace("-","−")+" °C";
+  const tf=freezing(g,s,model)-273.15;
+  $("tf").innerHTML=fmt(tf,2).replace("-","−")+" <small>°C</small>";
+  const st=state(g,s,TC,model);
+  $("uw").innerHTML=fmt(100*st.unfrozen,1)+" <small>%</small>";
+  $("so").innerHTML=fmt(st.saltOut,2)+" <small>wt%</small>";
+  $("si").innerHTML=fmt(st.saltIn,2)+" <small>wt%</small>";
+  chip($("uwc"),st.unfrozen>=UMIN,"≥ 25 %: enough liquid","< 25 %: too little liquid");
+  chip($("soc"),st.saltOut<=LIMIT,"below 4.41 wt%","above 4.41 wt%");
+  chip($("sic"),st.saltIn<=LIMIT,"below 4.41 wt%","above 4.41 wt%");
+  const fails=[st.unfrozen<UMIN,st.saltOut>LIMIT,st.saltIn>LIMIT].filter(Boolean).length;
+  $("msg").textContent = fails===0 ? "This recipe meets all three criteria at this temperature."
+    : (s>0 && st.saltOut<=LIMIT && st.saltIn>LIMIT) ? "Sorbitol protects the medium but not the cell interior: only a penetrating agent lowers the salt inside."
+    : `${fails} of 3 criteria not met at this temperature.`;
+  const pts=[]; for(let t=-1;t>=-25.001;t-=0.5){const q=state(g,s,t,model);pts.push([t,q.saltOut,q.saltIn,100*q.unfrozen]);}
+  chart($("c1"),[{pts:pts.map(p=>[p[0],p[1]]),color:"var(--accent)"},{pts:pts.map(p=>[p[0],p[2]]),color:"var(--warm)",dash:true}],
+        {ymin:0,ymax:25,yticks:[0,5,10,15,20,25],ylab:"salt (wt%)",ref:LIMIT,t:TC});
+  chart($("c2"),[{pts:pts.map(p=>[p[0],p[3]]),color:"var(--accent)"}],{ymin:0,ymax:100,yticks:[0,25,50,75,100],ylab:"liquid water (%)",ref:25,t:TC});
+}
+
+// check table against the Python results (predictions/freeze_concentration_cells.csv, -15 C)
+const PY=[["Saline only",0,0,[3.92,18.793,18.793]],["Sorbitol 9",0,9,[12.34,4.282,18.793]],["Glycerol 6.5",6.5,0,[13.95,4.430,4.430]],["Glycerol 2.75 + sorbitol 5",2.75,5,[12.86,4.412,12.185]]];
+$("check").innerHTML=PY.map(([n,g,s,py])=>{const q=state(g,s,-15,"oh");
+  return `<tr><td>${n}</td><td class="m">${fmt(100*q.unfrozen,2)}</td><td class="m">${fmt(q.saltOut,3)}</td><td class="m">${fmt(q.saltIn,3)}</td></tr>`+
+         `<tr><td style="color:var(--muted)">Python</td><td class="m">${fmt(py[0],2)}</td><td class="m">${fmt(py[1],3)}</td><td class="m">${fmt(py[2],3)}</td></tr>`;}).join("");
+
+["gly","sor","tt","model"].forEach(id=>$(id).addEventListener("input",update));
+document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{$("gly").value=b.dataset.g;$("sor").value=b.dataset.s;update();}));
+update();
+})();
+</script>
