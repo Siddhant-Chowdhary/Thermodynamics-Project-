@@ -1,12 +1,13 @@
 # The Ice Decides
 
-CL207 (Chemical Engineering Thermodynamics) optional project at IIT Bombay.
+CL207 (Chemical Engineering Thermodynamics) Project
 Siddhant Chowdhary, 25B0347.
 
 The report is [`report/report_final.pdf`](report/report_final.pdf). This repo has all the code and data behind it.
 
 ## What this project is about
 
+The theme involves using thermodynamic concepts in biological systems via cryoprotectants.
 When cells are frozen slowly, ice forms outside them. Ice is pure water, so all the salt gets squeezed into
 the little liquid that is left, and that salty liquid damages the cells. Glycerol protects them but it is toxic,
 so you want to use as little as possible.
@@ -15,7 +16,12 @@ I used solid–liquid equilibrium from the course to predict how salty that liqu
 activity coefficient of water. I modelled it with one number per OH group, fitted that number on glycerol only,
 and then tested it on other molecules and on glycerol + salt mixtures without changing it.
 
-## How to run it
+## **Try yourself: https://the-ice-decides.streamlit.app**
+
+I wanted people to see the thermodynamics, not just read it, so I built a small app where you play cryobiologist.
+Slide glycerol, sorbitol and temperature and watch the ice take over: how much water stays liquid and how salty it
+gets outside and inside the cell. Try 9 wt% sorbitol with no glycerol and see the outside stay safe while the
+inside turns to brine. It runs the same code as the report, so every number is real. (Locally: `streamlit run app.py`.)
 
 **Easiest: in Google Colab (nothing to install)**
 
@@ -24,18 +30,8 @@ https://colab.research.google.com/github/Siddhant-Chowdhary/Thermodynamics-Proje
 
 The notebook is the file `run_in_colab.ipynb` in the main folder of this repo. It downloads the repo, installs
 everything, rebuilds all the figures and tables, runs the tests and shows the figures. It takes a few minutes.
-You don't need to upload any files.
+You don't need to upload any files as all the files are extracted from this github repo.
 
-**On a laptop** (Python 3.10 or newer), from this folder:
-
-```
-pip install -r requirements.txt
-python run_all.py
-```
-
-`run_all.py` rebuilds every figure and table and checks that my saved predictions still come out the same.
-At the end it should say `All steps ran.` Two files show `DIFFERS` and the reason is printed next to them
-(they are old files from before I updated the salt data).
 
 **Interactive version:** `streamlit run app.py` opens a small page where you pick glycerol, sorbitol and
 temperature and see how much water stays liquid and how salty it gets inside and outside the cell.
@@ -65,7 +61,7 @@ All scripts are in `analysis/`. Figures go to `figures/`, result tables to `pred
 3. My first upload of this repo (21 Oct 2026) already has `predictions_v1.csv`, `unifac_v1.csv`,
    `crc_extra_v1.csv`, `lab_set_v2.csv` and `salt_set_v1.csv`, and they are the same as now. Later rounds are
    `e1_alcohols_sugars_v1.csv`, `lab_set_v3_glycerol_nacl.csv`, `disaccharides_v1.csv` and
-   `uraji_polyols_v1.csv` (not tested yet).
+   `uraji_polyols_v1.csv`.
 4. Anything I fitted after seeing results is labelled "post hoc".
 
 ## Data
