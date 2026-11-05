@@ -1,0 +1,3 @@
+# committed 30 Oct 2026 BEFORE any measurement; lab has only NaCl + glycerol. KM summation and osmotic virial values from analysis/osmotic_virial_benchmark.py functions (screened 23 Oct). Other samples already committed: salt_set_v1 (glycerol 20 + NaCl 5), lab_set_v2 (glycerol 30).
+sample,glycerol_wt,NaCl_wt,T_perOH_additive_C,T_KM_summation_C,T_osmotic_virial_C,T_ideal_glycerol_C
+glycerol 25 + NaCl 5,25,5,-11.71,-12.11,-12.42,-10.45

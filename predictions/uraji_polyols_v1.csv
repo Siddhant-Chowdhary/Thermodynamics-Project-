@@ -1,0 +1,18 @@
+# blind predictions committed 30 Oct 2026 before digitising Uraji 1996; a_OH = -2414.9
+solute,wt_percent,n_OH,T_perOH_C,T_ideal_C,T_UNIFAC_C
+xylitol,30,5,-6.15,-4.94,-4.44
+xylitol,40,5,-10.16,-7.45,-7.12
+xylitol,50,5,-16.18,-10.73,-11.26
+xylitol,60,5,-25.64,-15.20,-17.81
+sorbitol,30,6,-5.21,-4.16,-3.91
+sorbitol,40,6,-8.66,-6.31,-6.44
+sorbitol,50,6,-13.95,-9.14,-10.45
+sorbitol,60,6,-22.46,-13.05,-16.90
+maltitol,30,9,-2.72,-2.25,
+maltitol,40,9,-4.54,-3.46,
+maltitol,50,9,-7.39,-5.08,
+maltitol,60,9,-12.21,-7.41,
+lactitol,30,9,-2.72,-2.25,
+lactitol,40,9,-4.54,-3.46,
+lactitol,50,9,-7.39,-5.08,
+lactitol,60,9,-12.21,-7.41,

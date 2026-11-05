@@ -1,0 +1,6 @@
+# blind test #3, CRC 2005 pp. 8-67/8-68; scored only at grid points present in both files
+solute,model,n,max_wt,RMSE_K,max_abs_K
+maltose,per-OH,19,40,0.029,0.068
+maltose,ideal,19,40,0.229,0.934
+lactose,per-OH,9,8,0.005,0.012
+lactose,ideal,9,8,0.011,0.030

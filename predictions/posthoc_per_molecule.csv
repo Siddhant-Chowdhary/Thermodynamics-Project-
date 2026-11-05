@@ -1,0 +1,15 @@
+# POST HOC: per-molecule constants and a Gibbs-Helmholtz split; NOT part of the blind test
+analysis,solute_or_window,class,n_OH,n_C,a_all_or_a1,a_le20wt_or_a2,rmse_K_or_h,max_depression_K_or_s,n_points,data
+per_molecule,ethylene_glycol,acyclic polyol,2,2,-3595,-2473,0.209,23.84,19,"CRC 2005, 2-40 wt%"
+per_molecule,glycerol,acyclic polyol,3,3,-2415,-2426,0.017,15.50,19,"CRC 2005, 2-40 wt%"
+per_molecule,mannitol,acyclic polyol,6,6,-915,-915,0.003,1.84,14,"CRC 2005, 2-40 wt%"
+per_molecule,sorbitol,acyclic polyol,6,6,-1269,-1269,1.430,22.00,3,"Siniti 1999, 53-64 wt%"
+per_molecule,glucose,sugar,5,6,-1596,-1392,0.010,4.79,19,"CRC 2005, 2-40 wt%"
+per_molecule,fructose,sugar,5,6,-1261,-1086,0.015,4.20,18,"CRC 2005, 2-40 wt%"
+per_molecule,sucrose,sugar,8,12,-2321,-2127,0.015,4.45,24,"CRC 2005, 2-40 wt%"
+per_molecule,methanol,mono-alcohol,1,1,-4471,-4113,0.112,38.60,24,"CRC 2005, 2-40 wt%"
+per_molecule,ethanol,mono-alcohol,1,2,-6394,-4980,0.480,29.26,24,"CRC 2005, 2-40 wt%"
+per_molecule,1-propanol,mono-alcohol,1,3,1239,-2413,0.429,10.66,17,"CRC 2005, 2-40 wt%"
+per_molecule,2-propanol,mono-alcohol,1,3,-6495,-6495,0.078,8.52,14,"CRC 2005, 2-40 wt%"
+gibbs_helmholtz_sucrose,0.3-1.0 mol/kg,,8,12,-2162@271.9K,-1642@298.15K,h=-7552,s=-19.82,16,CRC 2005 + Robinson & Stokes 1949
+gibbs_helmholtz_sucrose,1.0-2.2 mol/kg,,8,12,-2271@269.8K,-1847@298.15K,h=-6305,s=-14.95,15,CRC 2005 + Robinson & Stokes 1949

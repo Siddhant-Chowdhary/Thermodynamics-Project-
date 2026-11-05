@@ -1,0 +1,16 @@
+# min glycerol (wt%) at -15.0 C in 0.9 wt% saline, per-OH model; criteria: NaCl outside <= 4.41 wt%, salt inside <= 4.41 wt% (equilibrium cell), unfrozen water >= 0.25
+sorbitol_wt,glycerol_outside_criterion,glycerol_inside_criterion,glycerol_unfrozen_criterion
+0,6.54,6.54,12.22
+1,5.78,8.60,11.56
+2,5.02,10.73,10.89
+3,4.26,12.90,10.23
+4,3.51,15.08,9.57
+5,2.75,17.27,8.91
+6,2.00,19.47,8.25
+7,1.25,21.67,7.59
+8,0.51,23.88,6.94
+9,0.00,26.08,6.28
+10,0.00,28.29,5.63
+11,0.00,nan,4.98
+12,0.00,nan,4.32
+# all criteria: optimum sorbitol 2.06 wt% + glycerol 10.86 wt% (glycerol alone 12.22 wt%)

@@ -1,0 +1,7 @@
+# METHOD DEMO (assumed inputs: balance_resolution, cal_n_readings, cal_scatter_sd, duplicate_difference, ice_point_realisation, peak_pick_sd, probe_nonlinearity, purity_water_fraction, sample_mass, supercool_corr_unc_frac, supercooling)
+sample,T_pred_C,dT_dw_K,supercool_correction_K,u_resolution_K,u_calibration_K,u_nonlinearity_K,u_composition_K,u_purity_K,u_supercooling_K,u_peak_picking_K,u_repeatability_K,u_combined_K,U_expanded_k2_K,largest_term
+glycerol 30,-9.69,-49.4,+0.267,0.018,0.010,0.056,0.011,0.043,0.067,0.030,0.075,0.128,0.26,repeatability
+PG 30,-11.05,-53.8,+0.290,0.018,0.010,0.058,0.012,0.047,0.073,0.030,0.075,0.134,0.27,repeatability
+sorbitol 40,-8.66,-42.1,+0.260,0.018,0.010,0.050,0.009,0.049,0.065,0.030,0.075,0.127,0.25,repeatability
+glycerol 15 + sorbitol 15,-7.51,-39.5,+0.213,0.018,0.010,0.043,0.009,0.034,0.053,0.030,0.075,0.114,0.23,repeatability
+glycerol 20 + NaCl 5,-9.42,-51.1,+0.246,0.018,0.010,0.054,0.012,0.037,0.062,0.030,0.075,0.123,0.25,repeatability

@@ -1,0 +1,6 @@
+# post-hoc diagnostics (EG data already seen); not blind tests
+model,a0_J_per_mol_per_OH,a1_J_per_mol_per_OH,glycerol_fit_RMSE_K,EG_2_40_RMSE_K
+"1-param, glycerol 2-20",-2426.3,,0.0056,0.826
+"1-param, glycerol 2-30",-2462.8,,0.0071,0.802
+"1-param, glycerol 2-40",-2414.9,,0.0166,0.834
+"2-param, glycerol 2-40",-1610.9,-308.7,0.0102,0.872
