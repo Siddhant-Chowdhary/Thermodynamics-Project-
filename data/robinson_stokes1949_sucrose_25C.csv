@@ -1,0 +1,25 @@
+# R. A. Robinson and R. H. Stokes, "Tables of osmotic and activity coefficients of electrolytes in aqueous solution at 25 C", Trans. Faraday Soc. 45, 612-624 (1949), Table IV p. 623 (sucrose, 25 C). Read from the page image 22 Oct 2026. m in mol/kg water; phi = practical osmotic coefficient.
+m,phi
+0.1,1.008
+0.2,1.017
+0.3,1.024
+0.4,1.033
+0.5,1.041
+0.6,1.050
+0.7,1.060
+0.8,1.068
+0.9,1.079
+1.0,1.088
+1.2,1.108
+1.4,1.129
+1.6,1.150
+1.8,1.169
+2.0,1.189
+2.5,1.240
+3.0,1.288
+3.5,1.334
+4.0,1.375
+4.5,1.414
+5.0,1.450
+5.5,1.482
+6.0,1.511

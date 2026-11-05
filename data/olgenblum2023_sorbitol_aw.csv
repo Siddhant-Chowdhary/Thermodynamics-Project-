@@ -1,0 +1,10 @@
+# Sorbitol water activity at 15, 25, 45 C. Source: Harries group data page (scholars.huji.ac.il/danielharries/node/27561, read 23 Oct 2026), which asks users to cite G. I. Olgenblum, N. Carmon, D. Harries, J. Am. Chem. Soc. 145, 23308-23320 (2023), doi:10.1021/jacs.3c08702. The page does not state the instrument; quality = author-published data, method unverified. Values copied exactly.
+molality,aw_15C,aw_25C,aw_45C
+0.59885,0.989,0.9892,0.9893
+1.20087,0.978,0.9788,0.9794
+1.80492,0.967,0.9685,0.9687
+2.39694,0.958,0.9574,0.9575
+3.01027,0.946,0.9462,0.9459
+3.58469,0.936,0.9349,0.9338
+4.16801,0.9233,0.9237,0.923
+4.79054,0.9124,0.9112,0.9101

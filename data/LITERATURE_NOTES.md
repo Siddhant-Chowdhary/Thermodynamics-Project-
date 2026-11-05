@@ -43,3 +43,11 @@ The `verified_vs_original` column is `no` for every row until it has been checke
 - J. Dairy Sci. 1984 bulking-agents paper: HTTP 403.
 - Kleinhans & Mazur full text (PMC / Europe PMC): captcha, then rate-limited.
 - The CRC online copy is cut off alphabetically at 1-propanol, so its NaCl, PG and sorbitol entries were not reachable.
+
+## Update 22 Oct 2026
+- Bower & Robinson, J. Phys. Chem. 67, 1540 (1963): sorbitol and sorbitol + NaCl isopiestic data at 25 C, transcribed from
+  the page images into data/bower1963_sorbitol_25C.csv (Tables I and II). High quality (NBS isopiestic).
+- **Baer & Baldwin 1984 sorbitol flagged:** freezing points imply phi = 1.14 already at 1 wt% (0.055 mol/kg), where phi must be
+  ~1. That is a ~13% systematic excess depression. Their sucrose matched CRC, so the issue is likely the sorbitol sample or its
+  concentration basis. Do not use these rows as evidence that a model works.
+- Shepard 1976 Fig. 3 digitised by Sid (WebPlotDigitizer), data/digitised/shepard1976_fig3.csv.

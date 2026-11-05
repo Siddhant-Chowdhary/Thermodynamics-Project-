@@ -1,0 +1,31 @@
+# V. E. Bower and R. A. Robinson, "Isopiestic vapor pressure measurements of the ternary system: sorbitol-sodium chloride-water at 25 deg", J. Phys. Chem. 67, 1540-1541 (1963). Read from the PDF page images 22 Oct 2026 (values checked against the printed tables). 25 C, molalities in mol/kg water.
+# table=I: binary sorbitol; m_ref = isopiestic NaCl molality, m_B = sorbitol molality, phi_B = osmotic coefficient of sorbitol (derived by the authors from NaCl reference data).
+# table=II: ternary; m_ref = NaCl alone, m_B = sorbitol, m_C = NaCl in the mixture, neg_delta_over_mBmC = -Delta/(m_B m_C) (kg/mol), the authors' measure of deviation from additivity (Delta < 0: salting-in).
+table,m_ref,m_B,m_C,phi_B,neg_delta_over_mBmC
+I,0.4998,0.9134,,1.0078,
+I,0.6963,1.2725,,1.0131,
+I,0.7156,1.3071,,1.0142,
+I,1.0397,1.8990,,1.026,
+I,1.2956,2.3661,,1.037,
+I,1.4089,2.5744,,1.042,
+I,1.6998,3.1113,,1.056,
+I,2.0307,3.7247,,1.074,
+II,0.6963,0.3237,0.5280,,0.0486
+II,0.6963,0.6368,0.3583,,0.0456
+II,0.6963,0.9279,0.1958,,0.0402
+II,2.2501,0.2553,2.1487,,0.0510
+II,2.2501,0.5283,2.0357,,0.0483
+II,2.2501,0.8052,1.9156,,0.0451
+II,2.2501,1.1055,1.7789,,0.0417
+II,4.0137,0.2227,3.9597,,0.0811
+II,4.0137,0.4497,3.8990,,0.0742
+II,4.0137,0.6980,3.8306,,0.0713
+II,4.0137,0.9501,3.7575,,0.0689
+II,5.2807,0.2755,5.2367,,0.0925
+II,5.2807,0.5284,5.1946,,0.0917
+II,5.2807,0.7685,5.1496,,0.0884
+II,5.2807,1.1349,5.0802,,0.0870
+II,5.9070,0.3229,5.8819,,0.1246
+II,5.9070,0.5174,5.8579,,0.1153
+II,5.9070,0.7941,5.8120,,0.1020
+II,5.9070,1.1079,5.7672,,0.0999
